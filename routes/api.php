@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(ReservationController::class)->group(function () {
         Route::get('all-reservations', 'allReservation');
         Route::post('make-reservation', 'makeReservation');
+        Route::post('update-status/{id}', 'updateStatus');
         Route::get('upcoming-reservations', 'upcomingReservations');
         Route::post('cancel-reservation/{id}', 'cancelReservation');
     });

@@ -7,55 +7,69 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+# Simple Service Reservation System
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+A lightweight platform built with Laravel to allow users to browse, reserve, and manage services like consultations or coaching sessions. Admins can manage services and monitor reservations through a dashboard.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## Business Requirements Understanding:
+The goal is to build a simple, user-friendly platform for booking services like **consultations** or **repairs**. It should make scheduling easy for users and management smooth for admins, with room to grow into features like notifications and analytics.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Feature Suggestion
+**Email Notifications**: Email Notifications: Automatically send emails for reservations, reminders. This keeps users updated and helps reduce missed appointments.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Important Note
+I have prior experience in this domain, as I’ve worked on a clinic system that involved **scheduling appointments** and meetings between doctors and patients. This included handling complex date, time, and **timezone** logic to ensure accurate booking and reminders.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Features
+- **User Authentication**: Register, log in, and log out securely.
+- **Service Listing**: Browse services with name, description, price, and availability. Admins can add, edit, or delete services.
+- **Reservation Flow**: Logged-in users can reserve services by selecting a date/time. Reservations track user ID, service ID, date/time, and status.
+- **Reservation Management** (Bonus): Users can view upcoming/past reservations and cancel them (with a 24-hour cancellation rule).
+- **Admin Dashboard & APIs** (Bonus): RESTful APIs for listing services and managing reservations. Admin dashboard to monitor all reservations.
+- **Basic Frontend**: Simple Blade templates with Bootstrap for a clean UI.
 
-## Laravel Sponsors
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Design Decisions
+- **Laravel Authentication**: Used Laravel Breeze for quick, secure user authentication.
+- **Database Schema**: Normalized tables for users, services, and reservations to prevent redundancy.
+- **APIs**: Built RESTful endpoints with Laravel Sanctum for secure access.
+- **Edge Cases**: Handled double bookings by checking availability during reservation and enforced a 24-hour cancellation policy.
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development/)**
-- **[Active Logic](https://activelogic.com)**
+## Tech Stack
+- **Backend**: PHP 8.3, Laravel 12
+- **Database**: MySQL
+- **APIs**: Laravel API routes with Sanctum for authentication
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Setup Instructions
+1. **Clone the Repository**:
+   ```
+   git clone <repository-url>
+   cd service-reservation
+   ```
+2. **Install Dependencies**:
+   ```
+   composer install
+   ```
+3. **Configure Environment**:
+   - Copy `.env.example` to `.env`.
+   - Set database credentials and `APP_URL`.
+   ```
+   cp .env.example .env
+   ```
+4. **Run Migrations**:
+   ```
+   php artisan migrate
+   ```
+5. **Seed Database**:
+   ```
+   php artisan db:seed
+   ```
+6. **Start the Server**:
+   ```
+   php artisan serve
+   ```
+## Endpoint Collection
+The full list of API endpoints is included in the project’s main directory for easy reference and testing.

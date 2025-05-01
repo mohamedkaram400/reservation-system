@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Service;
 use App\Traits\ApiResponseTrait;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ServiceResource;
 use App\Http\Requests\Api\CreateServiceRequest;
@@ -18,9 +19,10 @@ class ServiceController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return $this->apiResponse('Service retrieved successfully.', 200, ServiceResource::collection(Service::all()));
+        $services = Service::where('availability', true)->get();
+        return $this->apiResponse('Service retrieved successfully.', 200, ServiceResource::collection($services));
     }
 
     /**
@@ -29,7 +31,7 @@ class ServiceController extends Controller
      * @param CreateServiceRequest $request Validated service creation data
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(CreateServiceRequest $request)
+    public function store(CreateServiceRequest $request): JsonResponse
     {
         $service = Service::create($request->validated());
         return $this->apiResponse('Service created successfully.', 201, new ServiceResource($service));
@@ -43,7 +45,7 @@ class ServiceController extends Controller
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
         $service = Service::findOrFail($id);
         return $this->apiResponse('Service returned successfully.', 200, new ServiceResource($service));
@@ -58,7 +60,7 @@ class ServiceController extends Controller
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function update(UpdateServiceRequest $request, string $id)
+    public function update(UpdateServiceRequest $request, string $id): JsonResponse
     {
         $service = Service::findOrFail($id);
 
@@ -74,7 +76,7 @@ class ServiceController extends Controller
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         $service = Service::findOrFail($id);
         $service->delete();
