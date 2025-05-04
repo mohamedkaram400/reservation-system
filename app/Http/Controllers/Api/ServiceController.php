@@ -6,6 +6,7 @@ use App\Models\Service;
 use App\Traits\ApiResponseTrait;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\ServiceResource;
 use App\Http\Requests\Api\CreateServiceRequest;
 use App\Http\Requests\Api\UpdateServiceRequest;
@@ -13,6 +14,13 @@ use App\Http\Requests\Api\UpdateServiceRequest;
 class ServiceController extends Controller
 {
     use ApiResponseTrait;
+
+    public function __construct()
+    {
+        if (Auth::user()->is_admin != true) {
+            abort(403, 'Unauthorized action.');  
+        }
+    }
 
     /**
      * Retrieve and return a list of all available services.
