@@ -106,7 +106,7 @@ class ReservationController extends Controller
     {
         $reservation = Reservation::where('id', $id)
             ->where('user_id', Auth::id())
-            ->whereDate('reservation_date', '>', Carbon::now()) 
+            ->whereDate('reservation_date', '>', Carbon::now(Auth::user()->timezone)) 
             ->firstOrFail();
 
         $reservation->update(['status' => ReservationStatus::Canceled]);
@@ -133,7 +133,7 @@ class ReservationController extends Controller
 
         $reservation = Reservation::where('id', $id)
             ->where('user_id', Auth::id())
-            ->whereDate('reservation_date', '>', Carbon::now()) 
+            ->whereDate('reservation_date', '>', Carbon::now(Auth::user()->timezone)) 
             ->firstOrFail();
 
         if ($reservation->status === ReservationStatus::Completed) {

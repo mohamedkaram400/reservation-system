@@ -7,6 +7,7 @@ use App\Mail\EmailReminder;
 use App\Models\Reservation;
 use Illuminate\Console\Command;
 use App\Enums\ReservationStatus;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class EmailReminderCommand extends Command
@@ -30,10 +31,15 @@ class EmailReminderCommand extends Command
      */
     public function handle()
     {
-        $afterHour = Carbon::now()->subHour();
-        $reservations = Reservation::with(['service', 'user'])->whereDate('reservation_date', '=', $afterHour) 
-        ->where('status', '!=', ReservationStatus::Canceled)
-        ->get();
+        $now = Carbon::now(Auth::user()->timezone);
+        $oneHourLater = $now->copy()->addHour();
+
+        $reservations = Reservation::with(['service', 'user'])
+            ->whereBetween('reservation_date', [$now, $oneHourLater])
+            ->where('status', '!=', ReservationStatus::Canceled)
+            ->get();
+            
+        // dd($reservations);
 
         foreach ($reservations as $reservation) {
             try {
