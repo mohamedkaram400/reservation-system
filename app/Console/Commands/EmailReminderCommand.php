@@ -31,23 +31,16 @@ class EmailReminderCommand extends Command
      */
     public function handle()
     {
-        $now = Carbon::now(Auth::user()->timezone);
-        $oneHourLater = $now->copy()->addHour();
+        $utcNow = Carbon::now('UTC');
 
         $reservations = Reservation::with(['service', 'user'])
-            ->whereBetween('reservation_date', [$now, $oneHourLater])
+            ->whereBetween('reservation_date', [$utcNow, $utcNow->copy()->addHour()])
             ->where('status', '!=', ReservationStatus::Canceled)
             ->get();
-            
-        // dd($reservations);
+
 
         foreach ($reservations as $reservation) {
-            try {
-                $userEmail = $reservation->user ? $reservation->user->email : null;
-                Mail::to($userEmail)->send(new EmailReminder($reservation));
-            } catch (\Exception $e) {
-                logger('Email failed: ' . $e->getMessage());
-            }
+            Mail::to($reservation->user->email)->send(new EmailReminder($reservation));
         }
     }
 }
